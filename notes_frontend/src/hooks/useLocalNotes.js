@@ -31,10 +31,22 @@ function getNextSelection(notes, deletedId) {
  * useLocalNotes hook.
  */
 export default function useLocalNotes() {
-  const init = useMemo(() => getStored(), []);
-  const [notes, setNotes] = useState(init.notes || []);
-  const [selectedId, setSelectedId] = useState(init.selectedId || null);
-  const [filterText, setFilterText] = useState(init.filterText || '');
+  // Load once from storage and guarantee a safe object
+  const init = useMemo(() => {
+    const loaded = getStored();
+    // Double-guard in case storage changes in future
+    return loaded && typeof loaded === 'object'
+      ? {
+          notes: Array.isArray(loaded.notes) ? loaded.notes : [],
+          selectedId: typeof loaded.selectedId === 'string' ? loaded.selectedId : null,
+          filterText: typeof loaded.filterText === 'string' ? loaded.filterText : '',
+        }
+      : { notes: [], selectedId: null, filterText: '' };
+  }, []);
+
+  const [notes, setNotes] = useState(init.notes);
+  const [selectedId, setSelectedId] = useState(init.selectedId);
+  const [filterText, setFilterText] = useState(init.filterText);
 
   // Persist to localStorage when any relevant state changes.
   useEffect(() => {

@@ -5,6 +5,7 @@ import React from 'react';
  * NotesList shows the list of notes with selection and updatedAt info.
  */
 export default function NotesList({ notes, selectedId, onSelect }) {
+  notes = Array.isArray(notes) ? notes : [];
   if (!notes.length) {
     return (
       <div className="empty-state" aria-live="polite">
