@@ -8,7 +8,7 @@ function App() {
    * Root app for the Notes application.
    * Applies theme attribute on document root and renders the NotesApp.
    */
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark'); // default to dark
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -16,7 +16,7 @@ function App() {
 
   // PUBLIC_INTERFACE
   const toggleTheme = () => {
-    /** Toggle between light and dark theme; defaults to light on load. */
+    /** Toggle between light and dark theme; defaults to dark on load. */
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
